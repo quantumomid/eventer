@@ -1,6 +1,50 @@
+import { useRouter } from "next/router";
+import { Fragment } from "react";
+import EventList from "../../components/events/EventList";
+import ResultsTitle from "../../components/events/ResultsTitle";
+import { getFilteredEvents } from "../../dummyData";
+
 const FilteredEventsPage = () => {
+    const router = useRouter();
+    const filteredData = router.query.slug;
+    console.log({filteredData});
+
+    if(!filteredData) {
+        return <p className="center">Loading......</p>
+    }
+
+    const filteredYear = filteredData[0];
+    const filteredMonth = filteredData[1];
+    // console.log({ filteredMonth, filteredYear });
+    const numYear = +filteredYear;
+    const numMonth = +filteredMonth;
+    // console.log({ numMonth, numYear });
+
+    if(
+        isNaN(numYear) || 
+        isNaN(numMonth) || 
+        numYear > 2030 || 
+        numYear < 2021 || 
+        numMonth > 12 ||
+        numMonth < 1
+        ) {
+            return <p>Invalid Filter Values - please try another search</p>
+    }
+
+    // Now that we have our validations - we can get the filtered events
+    const filteredEvents = getFilteredEvents({ year: numYear, month: numMonth});
+
+    if(!filteredEvents || filteredEvents.length === 0) {
+        return <p>No events found for chosen field - please try another search</p>
+    }
+
+    const date = new Date(numYear, numMonth-1);
+
     return (
-        <h1>Welcome to the Filtered Events Page</h1>
+        <Fragment>
+            <ResultsTitle date={date} />
+            <EventList items={filteredEvents} />
+        </Fragment>
     )
 }
 
