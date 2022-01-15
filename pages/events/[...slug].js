@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import { Fragment } from "react";
 import EventList from "../../components/events/EventList";
 import ResultsTitle from "../../components/events/ResultsTitle";
+import Button from "../../components/ui/Button";
+import ErrorAlert from "../../components/ui/ErrorAlert";
 import { getFilteredEvents } from "../../dummyData";
 
 const FilteredEventsPage = () => {
@@ -28,14 +30,28 @@ const FilteredEventsPage = () => {
         numMonth > 12 ||
         numMonth < 1
         ) {
-            return <p>Invalid Filter Values - please try another search</p>
+            return (
+                <Fragment>
+                    <ErrorAlert><p>Invalid Filter Values - please try another search</p></ErrorAlert>                    
+                    <div className="center">
+                        <Button href="/events">Show All Events</Button>
+                    </div>
+                </Fragment>
+            )
     }
 
     // Now that we have our validations - we can get the filtered events
     const filteredEvents = getFilteredEvents({ year: numYear, month: numMonth});
 
     if(!filteredEvents || filteredEvents.length === 0) {
-        return <p>No events found for chosen field - please try another search</p>
+        return (
+            <Fragment>
+                <ErrorAlert><p>No events found for chosen field - please try another search</p></ErrorAlert>
+                <div className="center">
+                    <Button href="/events">Show All Events</Button>
+                </div>
+            </Fragment>
+        )
     }
 
     const date = new Date(numYear, numMonth-1);
