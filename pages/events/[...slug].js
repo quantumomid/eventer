@@ -4,19 +4,15 @@ import EventList from "../../components/events/EventList";
 import ResultsTitle from "../../components/events/ResultsTitle";
 import Button from "../../components/ui/Button";
 import ErrorAlert from "../../components/ui/ErrorAlert";
-import { getFilteredEvents } from "../../dummyData";
+import { getFilteredEvents } from "../../firebase/utils";
 
-const FilteredEventsPage = () => {
-    const router = useRouter();
-    const filteredData = router.query.slug;
-    console.log({filteredData});
+export const getServerSideProps = async (context) => {
+    const { params } = context;
+    // console.log({params});
+    const filter = params.slug;
 
-    if(!filteredData) {
-        return <p className="center">Loading......</p>
-    }
-
-    const filteredYear = filteredData[0];
-    const filteredMonth = filteredData[1];
+    const filteredYear = filter[0];
+    const filteredMonth = filter[1];
     // console.log({ filteredMonth, filteredYear });
     const numYear = +filteredYear;
     const numMonth = +filteredMonth;
@@ -30,6 +26,46 @@ const FilteredEventsPage = () => {
         numMonth > 12 ||
         numMonth < 1
         ) {
+            return {
+                props: { hasError: true }
+                // notFound: true,
+                // redirect: {
+                //     destination: "/error"
+                // }
+            }
+    }
+
+    // Now that we have our validations - we can get the filtered events
+    const filteredEvents = await getFilteredEvents({ year: numYear, month: numMonth});
+    
+    return {
+        props: {
+            filteredEvents,
+            desiredDate: {
+                month: numMonth,
+                year: numYear
+            }
+        }
+    }
+}
+
+const FilteredEventsPage = ({ hasError, filteredEvents, desiredDate }) => {
+    // const router = useRouter();
+    // const filteredData = router.query.slug;
+    // console.log({filteredData});
+
+    // if(!filteredData) {
+    //     return <p className="center">Loading......</p>
+    // }
+
+    // const filteredYear = filteredData[0];
+    // const filteredMonth = filteredData[1];
+    // // console.log({ filteredMonth, filteredYear });
+    // const numYear = +filteredYear;
+    // const numMonth = +filteredMonth;
+    // // console.log({ numMonth, numYear });
+
+    if(hasError) {
             return (
                 <Fragment>
                     <ErrorAlert><p>Invalid Filter Values - please try another search</p></ErrorAlert>                    
@@ -41,7 +77,7 @@ const FilteredEventsPage = () => {
     }
 
     // Now that we have our validations - we can get the filtered events
-    const filteredEvents = getFilteredEvents({ year: numYear, month: numMonth});
+    // const filteredEvents = getFilteredEvents({ year: numYear, month: numMonth});
 
     if(!filteredEvents || filteredEvents.length === 0) {
         return (
@@ -54,7 +90,7 @@ const FilteredEventsPage = () => {
         )
     }
 
-    const date = new Date(numYear, numMonth-1);
+    const date = new Date(desiredDate.numYear, desiredDate.numMonth-1);
 
     return (
         <Fragment>

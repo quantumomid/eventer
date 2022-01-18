@@ -1,12 +1,21 @@
-import { getAllEvents } from "../../dummyData";
 import { useRouter } from "next/router";
 import EventList from "../../components/events/EventList";
 import { Fragment } from "react";
 import EventsSearch from "../../components/events/EventsSearch";
+import { getAllEvents } from "../../firebase/utils";
 
-const EventsPage = () => {
+export const getStaticProps = async() => {
+    const allEvents = await getAllEvents();
+    return {
+        props: {
+            events: allEvents
+        },
+        revalidate: 120
+    }
+}
+
+const EventsPage = ({ events }) => {
     const router = useRouter();
-    const events = getAllEvents();
     // console.log(events);
 
     const findEvents = (year, month) => {
