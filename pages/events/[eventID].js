@@ -4,12 +4,12 @@ import EventContent from "../../components/event-detail/EventContent";
 import EventLogistics from "../../components/event-detail/EventLogistics";
 import EventSummary from "../../components/event-detail/EventSummary";
 import ErrorAlert from "../../components/ui/ErrorAlert";
-import { getAllEvents, getEventById } from "../../firebase/utils";
+import { getAllEvents, getEventById, getFeaturedEvents } from "../../firebase/utils";
 // import { getEventById } from "../../dummyData";
 
 export const getStaticPaths = async() => {
-    const allEvents = await getAllEvents();
-    const paths = allEvents.map(event => ({ params: { eventID: event.id } }));
+    const featuredEvents = await getFeaturedEvents();
+    const paths = featuredEvents.map(event => ({ params: { eventID: event.id } }));
     // console.log({paths});
     return {
         paths, 
@@ -24,14 +24,15 @@ export const getStaticProps = async(context) => {
     return {
         props: {
             event
-        }
+        },
+        revalidate: 30
     }
 }
 
 const EventDetailPage = ({ event }) => {
     // console.log({event});
     if(!event) {
-        return <ErrorAlert><p>No event found :( !</p></ErrorAlert>
+        return <div className="center"><p>Loading....</p></div>
     }
 
     return (
