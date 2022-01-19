@@ -4,7 +4,7 @@ import EventLogistics from "../../components/event-detail/EventLogistics";
 import EventSummary from "../../components/event-detail/EventSummary";
 import ErrorAlert from "../../components/ui/ErrorAlert";
 import { getEventById, getFeaturedEvents } from "../../firebase/utils";
-import Head from "next/head";
+import PageHeadData from "../../components/head/PageHeadData";
 
 export const getStaticPaths = async() => {
     const featuredEvents = await getFeaturedEvents();
@@ -36,10 +36,7 @@ const EventDetailPage = ({ event }) => {
 
     return (
         <Fragment>
-            <Head>
-                <title>{event.title}</title>
-                <meta name="description" content={event.description} />
-            </Head>
+            <PageHeadData title={event.title} descriptionMetaContent={event.description} />
             <EventSummary title={event.title} />
             <EventLogistics 
                 date={event.date} 

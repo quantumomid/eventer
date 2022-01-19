@@ -4,7 +4,7 @@ import ResultsTitle from "../../components/events/ResultsTitle";
 import Button from "../../components/ui/Button";
 import ErrorAlert from "../../components/ui/ErrorAlert";
 import { getFilteredEvents } from "../../firebase/utils";
-import Head from "next/head";
+import PageHeadData from "../../components/head/PageHeadData";
 
 export const getServerSideProps = async (context) => {
     const { params } = context;
@@ -54,6 +54,7 @@ const FilteredEventsPage = ({ hasError, filteredEvents, desiredDate }) => {
     if(hasError) {
             return (
                 <Fragment>
+                    <PageHeadData title="Filtered Events" descriptionMetaContent={`All events for provided filter`} />
                     <ErrorAlert><p>Invalid Filter Values - please try another search</p></ErrorAlert>                    
                     <div className="center">
                         <Button href="/events">Show All Events</Button>
@@ -64,7 +65,8 @@ const FilteredEventsPage = ({ hasError, filteredEvents, desiredDate }) => {
 
     if(!filteredEvents || filteredEvents.length === 0) {
         return (
-            <Fragment>
+            <Fragment>,
+                <PageHeadData title="Filtered Events" descriptionMetaContent={`All events for ${desiredDate.month}/${desiredDate.year}`} />
                 <ErrorAlert><p>No events found for chosen field - please try another search</p></ErrorAlert>
                 <div className="center">
                     <Button href="/events">Show All Events</Button>
@@ -77,10 +79,7 @@ const FilteredEventsPage = ({ hasError, filteredEvents, desiredDate }) => {
 
     return (
         <Fragment>
-            <Head>
-                <title>Filtered Events</title>
-                <meta name="description" content={`All events for ${desiredDate.month}/${desiredDate.year}`} />
-            </Head>
+            <PageHeadData title="Filtered Events" descriptionMetaContent={`All events for ${desiredDate.month}/${desiredDate.year}`} />
             <ResultsTitle date={date} />
             <EventList items={filteredEvents} />
         </Fragment>
