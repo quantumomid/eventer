@@ -1,10 +1,10 @@
-import { useRouter } from "next/router";
 import { Fragment } from "react";
 import EventList from "../../components/events/EventList";
 import ResultsTitle from "../../components/events/ResultsTitle";
 import Button from "../../components/ui/Button";
 import ErrorAlert from "../../components/ui/ErrorAlert";
 import { getFilteredEvents } from "../../firebase/utils";
+import Head from "next/head";
 
 export const getServerSideProps = async (context) => {
     const { params } = context;
@@ -50,20 +50,6 @@ export const getServerSideProps = async (context) => {
 }
 
 const FilteredEventsPage = ({ hasError, filteredEvents, desiredDate }) => {
-    // const router = useRouter();
-    // const filteredData = router.query.slug;
-    // console.log({filteredData});
-
-    // if(!filteredData) {
-    //     return <p className="center">Loading......</p>
-    // }
-
-    // const filteredYear = filteredData[0];
-    // const filteredMonth = filteredData[1];
-    // // console.log({ filteredMonth, filteredYear });
-    // const numYear = +filteredYear;
-    // const numMonth = +filteredMonth;
-    // // console.log({ numMonth, numYear });
 
     if(hasError) {
             return (
@@ -74,10 +60,7 @@ const FilteredEventsPage = ({ hasError, filteredEvents, desiredDate }) => {
                     </div>
                 </Fragment>
             )
-    }
-
-    // Now that we have our validations - we can get the filtered events
-    // const filteredEvents = getFilteredEvents({ year: numYear, month: numMonth});
+    }    
 
     if(!filteredEvents || filteredEvents.length === 0) {
         return (
@@ -90,10 +73,14 @@ const FilteredEventsPage = ({ hasError, filteredEvents, desiredDate }) => {
         )
     }
 
-    const date = new Date(desiredDate.numYear, desiredDate.numMonth-1);
+    const date = new Date(desiredDate.year, desiredDate.month-1);
 
     return (
         <Fragment>
+            <Head>
+                <title>Filtered Events</title>
+                <meta name="description" content={`All events for ${desiredDate.month}/${desiredDate.year}`} />
+            </Head>
             <ResultsTitle date={date} />
             <EventList items={filteredEvents} />
         </Fragment>
