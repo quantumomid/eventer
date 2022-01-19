@@ -20,7 +20,7 @@ const EventListItem = ({ item }) => {
     return (
         <li className={styles.container}>
             <div className={styles.imageWrapper}>
-                <Image src={item.image} alt={item.title} height={40} width={40} layout="responsive" objectFit="cover"/>
+                <Image src={item.image} alt={item.title} height={240} width={240} layout="responsive" objectFit="cover"/>
             </div>
             <div className={styles.content}>
                 <div className={styles.summary}>
