@@ -8,8 +8,40 @@ const NewComment = ({ onAddComment }) => {
     const nameInputRef = useRef();
     const commentInputRef = useRef();
 
+    const handleComment = (event) => {
+        event.preventDefault();
+
+        const enteredEmail = emailInputRef.current.value;
+        const enteredName = nameInputRef.current.value;
+        const enteredComment = commentInputRef.current.value;
+    
+        if (
+          !enteredEmail ||
+          enteredEmail.trim() === '' ||
+          !enteredEmail.includes('@') ||
+          !enteredName ||
+          enteredName.trim() === '' ||
+          !enteredComment ||
+          enteredComment.trim() === ''
+        ) {
+          setIsInvalid(true);
+          return;
+        }
+    
+        onAddComment({
+          email: enteredEmail,
+          name: enteredName,
+          text: enteredComment,
+        });
+
+        // resetting the form 
+        emailInputRef.current.value = "";
+        nameInputRef.current.value = "";
+        commentInputRef.current.value = "";
+    }
+
     return (
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleComment}>
             <div className={styles.row}>
                 <div className={styles.control}>
                     <label htmlFor='email'>Your email</label>

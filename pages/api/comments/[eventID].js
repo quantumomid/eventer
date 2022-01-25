@@ -34,8 +34,8 @@ const commentsHandler = (req, res) => {
     if(req.method === "GET") {
 
         const dummyList = [
-            { id: "c1", name: "John", comment: "Did not like this!" },
-            { id: "c2", name: "Stacey", comment: "It was okay" }
+            { id: "c1", name: "John", text: "Did not like this!" },
+            { id: "c2", name: "Stacey", text: "It was okay" }
         ];
 
         res.status(200).json({ comments: dummyList });
