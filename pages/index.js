@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import EventList from "../components/events/EventList";
 import { getFeaturedEvents } from "../firebase/utils";
 import PageHeadData from "../components/head/PageHeadData";
+import NewsletterRegistration from "../components/input/NewsletterRegistration";
 
 export const getStaticProps = async() => {
     const featuredEvents = await getFeaturedEvents();
@@ -19,6 +20,7 @@ const HomePage = ({ featuredEvents }) => {
         <Fragment>
             <PageHeadData />
             <h1>Welcome to Next Events</h1>
+            <NewsletterRegistration />
             <EventList items={featuredEvents} />
         </Fragment>
     )

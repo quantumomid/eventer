@@ -5,6 +5,7 @@ import EventSummary from "../../components/event-detail/EventSummary";
 import ErrorAlert from "../../components/ui/ErrorAlert";
 import { getEventById, getFeaturedEvents } from "../../firebase/utils";
 import PageHeadData from "../../components/head/PageHeadData";
+import Comments from "../../components/input/Comments";
 
 export const getStaticPaths = async() => {
     const featuredEvents = await getFeaturedEvents();
@@ -47,6 +48,7 @@ const EventDetailPage = ({ event }) => {
             <EventContent>
                 <p>{ event.description }</p>
             </EventContent>
+            <Comments eventID={event.eventID} />
         </Fragment>
     )
 }
