@@ -1,5 +1,5 @@
 {
-  "name": "omid-blog",
+  "name": "eventer",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "mongodb": "^4.3.1",
     "next": "10.0.6",
     "react": "17.0.1",
     "react-dom": "17.0.1"
