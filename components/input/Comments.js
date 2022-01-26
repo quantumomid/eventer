@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "./Comments.module.css";
 import CommentList from "./CommentList";
 import NewComment from "./NewComment";
+import NotificationContext from "../../store/NotificationContext";
 
 const Comments = ({ eventID }) => {
+    const notificationCtx = useContext(NotificationContext);
     // console.log({eventID});
     const [ showComments, setShowComments ] = useState(false);
     const [ comments, setComments ] = useState([]);
+    const [ isFetchingComments, setIsFetchingComments ] = useState(false);
 
     useEffect(async() => {
         const fetchComments = async () => {
@@ -15,8 +18,10 @@ const Comments = ({ eventID }) => {
             return data.comments;
         }
         if(showComments) {
+            setIsFetchingComments(true);
             const commmentsData = await fetchComments();
             setComments(commmentsData);
+            setIsFetchingComments(false);
         }
     }, [showComments]);
 
@@ -25,16 +30,41 @@ const Comments = ({ eventID }) => {
     }
 
     const addCommentHandler = async (commentData) => {
-        // send data to API
-        const postResponse = await fetch(`/api/comments/${eventID}`, {
-            method: "POST",
-            body: JSON.stringify(commentData),
-            headers: {
-                "Content-Type": "application/json"
-            }
+        notificationCtx.showNotification({
+            title: "Posting comment.....",
+            message: "Adding comment to database.",
+            status: "pending"
         });
-        const data = await postResponse.json();
-        // console.log({data});
+
+        try {
+            // send data to API
+            const postResponse = await fetch(`/api/comments/${eventID}`, {
+                method: "POST",
+                body: JSON.stringify(commentData),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const data = await postResponse.json();
+            // console.log({data});
+
+            // This is to account for status code errors which are NOT
+            // always catched by the try-catch block
+            if(!postResponse.ok) throw Error(data.message);
+
+            notificationCtx.showNotification({
+                title: "Comment submitted!",
+                message: "Your comment has been successfully added!",
+                status: "success"
+            });
+        } catch (error) {
+            notificationCtx.showNotification({
+                title: "Error!",
+                message: error.message,
+                status: "error"
+            });
+        }
     }
 
     return (
@@ -43,7 +73,8 @@ const Comments = ({ eventID }) => {
                 {showComments ? 'Hide' : 'Show'} Comments
             </button>
             {showComments && <NewComment onAddComment={addCommentHandler} />}
-            {showComments && <CommentList comments={comments} />} 
+            {(showComments && !isFetchingComments) && <CommentList comments={comments} />} 
+            {(showComments && isFetchingComments) && <p>Loading....</p>} 
         </section>
     )
 }

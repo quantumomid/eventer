@@ -19,7 +19,6 @@ const HomePage = ({ featuredEvents }) => {
     return (
         <Fragment>
             <PageHeadData />
-            <h1>Welcome to Next Events</h1>
             <NewsletterRegistration />
             <EventList items={featuredEvents} />
         </Fragment>
