@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 const NotificationContext = createContext({
     notification: null, // { title, message, status }
@@ -9,6 +9,24 @@ const NotificationContext = createContext({
 // Higher Order Component to provider context to a component
 export const NotificationContextProvider = ({ children }) => {
     const [ activeNotification, setActiveNotification ] = useState();
+
+    // Set automatic timer to close notification window after 3s assuming 
+    // user hasnt already closed it
+    useEffect(() => {
+        let timer;
+        if(activeNotification && (
+            activeNotification.status === "success" || 
+            activeNotification.status === "error")
+        ) {
+            timer = setTimeout(() => {
+                setActiveNotification(null);
+            }, 3000);
+        }
+
+        return () => {
+            clearTimeout(timer);
+        }
+    }, [activeNotification]);
 
     const showNotificationHandler = (notificationData) => {
         setActiveNotification(notificationData);
