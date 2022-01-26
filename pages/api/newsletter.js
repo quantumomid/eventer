@@ -10,14 +10,14 @@ const newsletterHandler = async (req, res) => {
         }
 
         const client = await MongoClient.connect(
-            `mongodb+srv://quantumomid:${process.env.MONGO_DB_USER_PASSWORD}@cluster0.garht.mongodb.net/newsletter?retryWrites=true&w=majority`
+            `mongodb+srv://quantumomid:${process.env.MONGO_DB_USER_PASSWORD}@cluster0.garht.mongodb.net/events?retryWrites=true&w=majority`
         );
 
         // connect to the database
         const db = client.db();
 
         // get specific collection from database
-        await db.collection("emails").insertOne({ email: userEmail });
+        await db.collection("newsletter").insertOne({ email: userEmail });
 
         //disconnect from client once done!
         client.close();

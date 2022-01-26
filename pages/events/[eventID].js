@@ -30,7 +30,7 @@ export const getStaticProps = async(context) => {
 }
 
 const EventDetailPage = ({ event }) => {
-    // console.log({event});
+    console.log({event});
     if(!event) {
         return <div className="center"><p>Loading....</p></div>
     }
@@ -48,7 +48,7 @@ const EventDetailPage = ({ event }) => {
             <EventContent>
                 <p>{ event.description }</p>
             </EventContent>
-            <Comments eventID={event.eventID} />
+            <Comments eventID={event.id} />
         </Fragment>
     )
 }

@@ -44,12 +44,12 @@ const NewComment = ({ onAddComment }) => {
         <form className={styles.form} onSubmit={handleComment}>
             <div className={styles.row}>
                 <div className={styles.control}>
-                    <label htmlFor='email'>Your email</label>
-                    <input type='email' id='email' ref={emailInputRef} />
-                </div>
-                <div className={styles.control}>
                     <label htmlFor='name'>Your name</label>
                     <input type='text' id='name' ref={nameInputRef} />
+                </div>
+                <div className={styles.control}>
+                    <label htmlFor='email'>Your email</label>
+                    <input type='email' id='email' ref={emailInputRef} />
                 </div>
             </div>
             <div className={styles.control}>
