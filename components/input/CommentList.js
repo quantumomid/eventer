@@ -4,7 +4,7 @@ const CommentList = ({ comments }) => {
     return (
         <ul className={styles.comments}>
         {/* Render list of comments - fetched from API */}
-            {
+            { comments ?
                 comments.map(comment => (
                     <li key={comment._id}>
                         <p>{comment.text}</p>
@@ -13,6 +13,7 @@ const CommentList = ({ comments }) => {
                         </div>
                     </li>
                 ))
+                : <p>No comments for this event.</p>
             }
         </ul>
     )

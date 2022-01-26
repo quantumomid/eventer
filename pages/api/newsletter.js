@@ -1,19 +1,4 @@
-import { MongoClient } from "mongodb";
-
-const connectDatabase = async () => {
-    const client = await MongoClient.connect(
-        `mongodb+srv://quantumomid:${process.env.MONGO_DB_USER_PASSWORD}@cluster0.garht.mongodb.net/events?retryWrites=true&w=majority`
-    );
-    return client;
-}
-
-const insertEmail = async(client, document) => {
-    // connect to the database
-    const db = client.db();
-
-    // get specific collection from database
-    await db.collection("newsletter").insertOne(document);
-}
+import { connectDatabase, insertDocument } from "../../mongodb/utils";
 
 const newsletterHandler = async (req, res) => {
     if(req.method === "POST") {
@@ -33,7 +18,7 @@ const newsletterHandler = async (req, res) => {
         }
 
         try {
-            await insertEmail(client, { email: userEmail });
+            await insertDocument(client, "newsletter", { email: userEmail });
             //disconnect from client once done!
             client.close();
         } catch (error) {

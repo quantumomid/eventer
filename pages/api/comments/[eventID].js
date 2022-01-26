@@ -1,11 +1,18 @@
-import { MongoClient } from "mongodb";
+import { connectDatabase, getDocuments, insertDocument } from "../../../mongodb/utils";
 
 const commentsHandler = async (req, res) => {
 
     // The parameter is called eventID since I named this file as such!
     const eventID = req.query.eventID;
     console.log(req.query);
-    const client = await MongoClient.connect(`mongodb+srv://quantumomid:${process.env.MONGO_DB_USER_PASSWORD}@cluster0.garht.mongodb.net/events?retryWrites=true&w=majority`);
+
+    let client;
+    try {
+        client = await connectDatabase();
+    } catch (error) {
+        res.status(500).json({ message: "Connection to database failed!" });
+        return;
+    }
 
     if(req.method === "POST") {
         const { email, name, text } = req.body;
@@ -19,6 +26,7 @@ const commentsHandler = async (req, res) => {
             text.trim() === ""
             ) {
                 res.status(422).json({ message: "Invalid input" });
+                client.close();
                 return;
         }
 
@@ -30,34 +38,32 @@ const commentsHandler = async (req, res) => {
         }
         console.log({ newComment });
 
-        const db = client.db();
-
-        const result = await db.collection("comments").insertOne(newComment);
+        let result;
+        try {
+            result = await insertDocument(client, "comments", newComment);
+            //MongoDB will automatically add an Id for us - can add 
+            //this now so that frontend data also has access to the id
+            newComment._id = result.insertedId;
+            res.status(201).json({ message: "Comment successfully added!", comment: newComment });
+        } catch (error) {
+            res.status(500).json({ message: "Inserting data to database failed!" });
+            // NOT returning so that we reach the client.close() below to ensure database connected is then closed
+            // return;
+        }
         // console.log({ result });
-
-        //MongoDB will automatically add an Id for us - can add 
-        //this now so that frontend data also has access to the id
-        newComment.id = result.insertedId;
-
-        res.status(201).json({ message: "Comment successfully added!", comment: newComment });
     }
 
     if(req.method === "GET") {
-
-        const db = client.db();
-
-        // get only comments belonging to specific event id comments from database and sort in descending order of _id
-        // so that the latest comment is first comment
-        const comments = await db.collection("comments")
-            .find({ eventID: eventID })
-            .sort({ _id: -1 })
-            .toArray();
-        // const dummyList = [
-        //     { id: "c1", name: "John", text: "Did not like this!" },
-        //     { id: "c2", name: "Stacey", text: "It was okay" }
-        // ];
-
-        res.status(200).json({ comments });
+        let comments;
+        try {
+            // get only comments belonging to specific event id comments from database and sort in descending order of _id
+            // so that the latest comment is first comment
+            comments = await getDocuments(client, "comments", { _id: -1 }, { eventID: eventID });
+            res.status(200).json({ comments });
+        } catch (error) {
+            res.status(500).json({ message: "Getting comments failed" });
+            // return;
+        }
     }
 
     client.close();
