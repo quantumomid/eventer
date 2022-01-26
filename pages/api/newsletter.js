@@ -25,7 +25,6 @@ const newsletterHandler = async (req, res) => {
             res.status(500).json({ message: "Inserting data to database failed!" });
             return;
         }
-
         // console.log({userEmail});
         res.status(201).json({ message: "Signed up!" });
     }

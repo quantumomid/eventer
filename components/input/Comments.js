@@ -4,7 +4,7 @@ import CommentList from "./CommentList";
 import NewComment from "./NewComment";
 
 const Comments = ({ eventID }) => {
-    console.log({eventID});
+    // console.log({eventID});
     const [ showComments, setShowComments ] = useState(false);
     const [ comments, setComments ] = useState([]);
 
@@ -22,13 +22,6 @@ const Comments = ({ eventID }) => {
 
     const toggleCommentsHandler = () => {
         setShowComments(prevState => !prevState);
-
-        // this is because the setState call in React is asynchronous therefore the change has 
-        // NOT happened yet i.e. when showComments is FALSE then this indicates the user is clicking
-        // to SHOW comments - but this is harder to understand thereofre use useEffect as shown ABOVE
-        // if(!showComments){
-        //     console.log("RAN");
-        // }
     }
 
     const addCommentHandler = async (commentData) => {
@@ -41,7 +34,7 @@ const Comments = ({ eventID }) => {
             }
         });
         const data = await postResponse.json();
-        console.log({data});
+        // console.log({data});
     }
 
     return (

@@ -24,7 +24,7 @@ const NewsletterRegistration = () => {
         });
 
         const data = await postResponse.json();
-        console.log({data});
+        // console.log({data});
         emailRef.current.value = "";
     }
 

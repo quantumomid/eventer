@@ -4,7 +4,7 @@ const commentsHandler = async (req, res) => {
 
     // The parameter is called eventID since I named this file as such!
     const eventID = req.query.eventID;
-    console.log(req.query);
+    // console.log(req.query);
 
     let client;
     try {
@@ -36,7 +36,7 @@ const commentsHandler = async (req, res) => {
             text,
             eventID,
         }
-        console.log({ newComment });
+        // console.log({ newComment });
 
         let result;
         try {
@@ -65,7 +65,6 @@ const commentsHandler = async (req, res) => {
             // return;
         }
     }
-
     client.close();
 }
 

@@ -2,7 +2,6 @@ import { Fragment } from "react";
 import EventContent from "../../components/event-detail/EventContent";
 import EventLogistics from "../../components/event-detail/EventLogistics";
 import EventSummary from "../../components/event-detail/EventSummary";
-import ErrorAlert from "../../components/ui/ErrorAlert";
 import { getEventById, getFeaturedEvents } from "../../firebase/utils";
 import PageHeadData from "../../components/head/PageHeadData";
 import Comments from "../../components/input/Comments";
@@ -30,7 +29,7 @@ export const getStaticProps = async(context) => {
 }
 
 const EventDetailPage = ({ event }) => {
-    console.log({event});
+    // console.log({event});
     if(!event) {
         return <div className="center"><p>Loading....</p></div>
     }
