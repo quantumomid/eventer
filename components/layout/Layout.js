@@ -1,13 +1,13 @@
 import { Fragment, useContext } from "react";
 import MainHeader from "./MainHeader";
 import Notification from '../ui/Notification';
-import NotificationContext from "../../store/notificationContext";
+import NotificationContext from "../../store/NotificationContext";
 
 const Layout = ({ children }) => {
     const notificationCtx = useContext(NotificationContext);
 
     const activeNotification = notificationCtx.notification;
-
+    console.log({activeNotification});
     return (
         <Fragment>
             <MainHeader/>

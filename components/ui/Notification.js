@@ -1,6 +1,9 @@
+import NotificationContext from "../../store/NotificationContext";
 import styles from "./Notification.module.css";
+import { useContext } from "react";
 
 const Notification = ({ title, message, status }) => {
+    const notificationCtx = useContext(NotificationContext);
 
     let statusStyles = "";
 
@@ -19,7 +22,7 @@ const Notification = ({ title, message, status }) => {
     const activeStyles = `${styles.notification} ${statusStyles}`;
 
     return (
-        <div className={activeStyles} /*onClick={notificationCtx.hideNotification}*/>
+        <div className={activeStyles} onClick={notificationCtx.hideNotification}>
             <h2>{title}</h2>
             <p>{message}</p>
         </div>

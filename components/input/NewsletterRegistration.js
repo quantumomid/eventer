@@ -1,7 +1,10 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import styles from "./NewsletterRegistration.module.css";
+import NotificationContext from "../../store/NotificationContext";
 
 const NewsletterRegistration = () => {
+
+    const notificationCtx = useContext(NotificationContext);
 
     // use REF since we are only accessing the email input once i.e.
     // during submission
@@ -12,19 +15,45 @@ const NewsletterRegistration = () => {
     
         // fetch user input (state or refs)
         const enteredEmail = emailRef.current.value;
-        // optional: validate input
-        // send valid data to API
-
-        const postResponse = await fetch("/api/newsletter", {
-            method: "POST",
-            body: JSON.stringify({email: enteredEmail}),
-            headers: {
-                "Content-Type": "application/json",
-            },
+        
+        // trigger notification to show pending state
+        notificationCtx.showNotification({
+            title: "Signing up.....",
+            message: "Registering for newsletter.",
+            status: "pending"
         });
 
-        const data = await postResponse.json();
-        // console.log({data});
+        try {
+            // send valid data to API
+            const postResponse = await fetch("/api/newsletter", {
+                method: "POST",
+                body: JSON.stringify({email: enteredEmail}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            // console.log(postResponse);
+
+            const data = await postResponse.json();
+            // console.log({data});
+
+            // This is to account for status code errors which are NOT
+            // always catched by the try-catch block
+            if(!postResponse.ok) throw Error(data.message);
+
+            notificationCtx.showNotification({
+                title: "Signed up!",
+                message: "Registered successfully.",
+                status: "success"
+            });
+        } catch (error) {
+            notificationCtx.showNotification({
+                title: "Error!",
+                message: error.message || "Something went wrong :(",
+                status: "error"
+            });
+        }
+        
         emailRef.current.value = "";
     }
 
