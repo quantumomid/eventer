@@ -32,10 +32,8 @@ const NewsletterRegistration = () => {
                     "Content-Type": "application/json",
                 },
             });
-            // console.log(postResponse);
 
             const data = await postResponse.json();
-            // console.log({data});
 
             // This is to account for status code errors which are NOT
             // always catched by the try-catch block
@@ -59,18 +57,16 @@ const NewsletterRegistration = () => {
 
     return (
         <section className={styles.newsletter}>
-            <h2>Sign up to stay updated!</h2>
-            <form onSubmit={registrationHandler}>
-                <div className={styles.control}>
-                    <input
-                        type='email'
-                        id='email'
-                        ref={emailRef}
-                        placeholder='Your email'
-                        aria-label='Your email'
-                    />
-                    <button>Register</button>
-                </div>
+            <h1>Sign up to stay updated!</h1>
+            <form onSubmit={registrationHandler} className={styles.form}>
+                <input
+                    type='email'
+                    id='email'
+                    ref={emailRef}
+                    placeholder='Your email'
+                    aria-label='Your email'
+                />
+                <button>Register</button>
             </form>
         </section>
     )

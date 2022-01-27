@@ -22,7 +22,7 @@ const EventListItem = ({ item }) => {
             <div className={styles.imageWrapper}>
                 <Image src={item.image} alt={item.title} height={240} width={240} layout="responsive" objectFit="cover"/>
             </div>
-            <div className={styles.content}>
+            <article className={styles.content}>
                 <div className={styles.summary}>
                     <h2>{ item.title }</h2>
                     <div className={styles.date}>
@@ -40,7 +40,7 @@ const EventListItem = ({ item }) => {
                         <span className={styles.icon}><ArrowRightIcon /></span>
                     </Button>
                 </div>
-            </div>
+            </article>
         </li>
     )
 }

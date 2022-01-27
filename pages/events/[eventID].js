@@ -9,7 +9,6 @@ import Comments from "../../components/input/Comments";
 export const getStaticPaths = async() => {
     const featuredEvents = await getFeaturedEvents();
     const paths = featuredEvents.map(event => ({ params: { eventID: event.id } }));
-    // console.log({paths});
     return {
         paths, 
         fallback: true
@@ -18,7 +17,6 @@ export const getStaticPaths = async() => {
 
 export const getStaticProps = async(context) => {
     const eventID = context.params.eventID;
-    // console.log({eventID});
     const event = await getEventById(eventID);
     return {
         props: {
@@ -29,7 +27,6 @@ export const getStaticProps = async(context) => {
 }
 
 const EventDetailPage = ({ event }) => {
-    // console.log({event});
     if(!event) {
         return <div className="center"><p>Loading....</p></div>
     }

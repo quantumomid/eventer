@@ -17,7 +17,6 @@ export const getStaticProps = async() => {
 
 const EventsPage = ({ events }) => {
     const router = useRouter();
-    // console.log(events);
 
     const findEvents = (year, month) => {
         const fullPath = `/events/${year}/${month}`;

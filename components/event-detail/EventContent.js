@@ -1,11 +1,9 @@
 import classes from "./EventContent.module.css";
 
-function EventContent({children}) {
-  return (
-    <section className={classes.content}>
-      {children}
-    </section>
-  );
-}
+const EventContent = ({children}) => (
+  <section className={classes.content}>
+    {children}
+  </section>
+);
 
 export default EventContent;

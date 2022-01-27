@@ -6,7 +6,6 @@ import NotificationContext from "../../store/NotificationContext";
 
 const Comments = ({ eventID }) => {
     const notificationCtx = useContext(NotificationContext);
-    // console.log({eventID});
     const [ showComments, setShowComments ] = useState(false);
     const [ comments, setComments ] = useState([]);
     const [ isFetchingComments, setIsFetchingComments ] = useState(false);
@@ -47,7 +46,6 @@ const Comments = ({ eventID }) => {
             });
 
             const data = await postResponse.json();
-            // console.log({data});
 
             // This is to account for status code errors which are NOT
             // always catched by the try-catch block

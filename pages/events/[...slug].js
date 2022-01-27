@@ -8,15 +8,13 @@ import PageHeadData from "../../components/head/PageHeadData";
 
 export const getServerSideProps = async (context) => {
     const { params } = context;
-    // console.log({params});
-    const filter = params.slug;
 
+    const filter = params.slug;
     const filteredYear = filter[0];
     const filteredMonth = filter[1];
-    // console.log({ filteredMonth, filteredYear });
+
     const numYear = +filteredYear;
     const numMonth = +filteredMonth;
-    // console.log({ numMonth, numYear });
 
     if(
         isNaN(numYear) || 

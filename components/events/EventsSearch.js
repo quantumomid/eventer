@@ -44,7 +44,7 @@ const EventsSearch = ({ handleSearch }) => {
                     </select>
                 </div>
             </div>
-            <Button /*handleClick={handleClick}*/>Find Events</Button>
+            <Button>Find Events</Button>
         </form>
     )
 }
