@@ -4,7 +4,6 @@ const commentsHandler = async (req, res) => {
 
     // The parameter is called eventID since I named this file as such!
     const eventID = req.query.eventID;
-    // console.log(req.query);
 
     let client;
     try {
@@ -36,7 +35,6 @@ const commentsHandler = async (req, res) => {
             text,
             eventID,
         }
-        // console.log({ newComment });
 
         let result;
         try {
@@ -50,7 +48,6 @@ const commentsHandler = async (req, res) => {
             // NOT returning so that we reach the client.close() below to ensure database connected is then closed
             // return;
         }
-        // console.log({ result });
     }
 
     if(req.method === "GET") {
