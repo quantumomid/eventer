@@ -2,6 +2,23 @@ import { useState } from "react";
 import SignInForm from "../components/sign-in/SignInForm";
 import styles from "../styles/SignInPage.module.css";
 
+const createUser = async (email, password) => {
+    const response = await fetch("/api/auth/register", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong!');
+    }
+  
+    return data;
+}
+
 const SignInPage = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [formInputs, setFormInputs] = useState({
@@ -22,9 +39,26 @@ const SignInPage = () => {
         }));
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formInputs);
+
+        //Check whether logging in or registering
+        if (isLogin){
+            //Sign in user
+        } else {
+            // Register
+
+            if (formInputs.password !== formInputs.confirmPassword){
+                throw Error("Passwords do not match");
+            }
+
+            try {
+                const result = await createUser(formInputs.email, formInputs.password);
+                console.log(result);
+              } catch (error) {
+                console.log(error);
+            }
+        }
     }
 
     return (
