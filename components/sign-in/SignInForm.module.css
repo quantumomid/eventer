@@ -16,3 +16,18 @@
     width: 60vw;
     max-width: 700px;
 }
+
+.button {
+    cursor: pointer;
+    font: inherit;
+    font-size: 2rem;
+    color: white;
+    background-color: #03be9f;
+    border: 1px solid #03be9f;
+    border-radius: 4px;
+    padding: 0 2.5rem;
+}
+
+.button:hover{
+    background-color: #037a67;
+}

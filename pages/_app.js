@@ -8,6 +8,7 @@ function MyApp({ Component, pageProps }) {
     <NotificationContextProvider>
       <Layout>
         <Head>
+          <title>Eventer</title>
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         </Head>
         <Component {...pageProps} />
