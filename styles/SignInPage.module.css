@@ -1,0 +1,35 @@
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button {
+    cursor: pointer;
+    font: inherit;
+    font-size: 2rem;
+    color: white;
+    background-color: #03be9f;
+    border: 1px solid #03be9f;
+    border-radius: 4px;
+    padding: 0 2.5rem;
+}
+
+.button:hover{
+    background-color: #037a67;
+}
+
+.toggle {
+    margin-top: 1rem;
+    background-color: transparent;
+    color: #03be9f;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+    padding: 0.15rem 1.5rem;
+    cursor: pointer;
+}
+
+.toggle:hover{
+    color: #037a67;
+}

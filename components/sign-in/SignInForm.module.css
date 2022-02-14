@@ -1,0 +1,18 @@
+.form {
+    margin: 5vh auto 1vh;
+    width: fit-content;
+}
+
+.control {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem 0;
+    margin-bottom: 2vh;
+}
+
+.control input {
+    padding: 2vh;
+    border-radius: 10px;
+    width: 60vw;
+    max-width: 700px;
+}

@@ -11,6 +11,9 @@ const MainHeader = () => (
                 <li>
                     <Link href="/events"><a>All Events</a></Link>
                 </li>
+                <li>
+                    <Link href="/sign-in"><a>Sign In</a></Link>
+                </li>
             </ul>
         </nav>
     </header>
