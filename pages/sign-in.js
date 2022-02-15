@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import SignInForm from "../components/sign-in/SignInForm";
 import styles from "../styles/SignInPage.module.css";
+import { signIn } from "next-auth/client";
 
 const createUser = async (email, password) => {
     const response = await fetch("/api/auth/register", {
@@ -26,6 +28,7 @@ const SignInPage = () => {
         password: "",
         confirmPassword: ""
     })
+    const router = useRouter();
 
     const handleSignInSwitch = () => {
         setIsLogin((currentState) => !currentState);
@@ -45,6 +48,20 @@ const SignInPage = () => {
         //Check whether logging in or registering
         if (isLogin){
             //Sign in user
+            // console.log("Attempt Log in");
+            const result = await signIn("credentials", {
+                redirect: false,
+                email: formInputs.email,
+                password: formInputs.password,
+            });
+            // console.log(result);
+
+            //Success - then redirect to profile page
+            if (!result.error) {
+                // set some auth state
+                router.replace("/profile");
+            }
+
         } else {
             // Register
 
