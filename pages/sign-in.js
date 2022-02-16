@@ -1,9 +1,10 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import SignInForm from "../components/sign-in/SignInForm";
 import styles from "../styles/SignInPage.module.css";
 import { signIn } from "next-auth/client";
 import NotificationContext from "../store/NotificationContext";
+import { getSession } from "next-auth/client";
 
 const createUser = async (email, password) => {
     const response = await fetch("/api/auth/register", {
@@ -31,6 +32,22 @@ const SignInPage = () => {
         confirmPassword: ""
     })
     const router = useRouter();
+
+    const [isLoading, setIsLoading] = useState(true);
+  
+    useEffect(() => {
+      getSession().then((session) => {
+        if (session) {
+          router.replace("/");
+        } else {
+          setIsLoading(false);
+        }
+      });
+    }, [router]);
+  
+    if (isLoading) {
+      return <p>Loading...</p>;
+    }
 
     const handleSignInSwitch = () => {
         setIsLogin((currentState) => !currentState);
