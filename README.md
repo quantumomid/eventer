@@ -8,6 +8,7 @@ Made with:
 - Firebase 
 - MongoDB
 - Next Auth - authentication
+    - useSession, getSession, JWT tokens
 - BCryptJS - for password hashing
 
 In particular use was made of various Next.js features such as server side rendering, incremental static regeneration, image and link optimisations and api backend routes.
