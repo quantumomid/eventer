@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import SignInForm from "../components/sign-in/SignInForm";
 import styles from "../styles/SignInPage.module.css";
 import { signIn } from "next-auth/client";
+import NotificationContext from "../store/NotificationContext";
 
 const createUser = async (email, password) => {
     const response = await fetch("/api/auth/register", {
@@ -22,6 +23,7 @@ const createUser = async (email, password) => {
 }
 
 const SignInPage = () => {
+    const notificationCtx = useContext(NotificationContext);
     const [isLogin, setIsLogin] = useState(true);
     const [formInputs, setFormInputs] = useState({
         email: "",
@@ -48,7 +50,14 @@ const SignInPage = () => {
         //Check whether logging in or registering
         if (isLogin){
             //Sign in user
-            // console.log("Attempt Log in");
+
+            // trigger notification to show pending state
+            notificationCtx.showNotification({
+                title: "Signing in.....",
+                message: "Logging you in.",
+                status: "pending"
+            });
+
             const result = await signIn("credentials", {
                 redirect: false,
                 email: formInputs.email,
@@ -58,8 +67,19 @@ const SignInPage = () => {
 
             //Success - then redirect to profile page
             if (!result.error) {
+                notificationCtx.showNotification({
+                    title: "Logged in!",
+                    message: "Sign in was successfully.",
+                    status: "success"
+                });
                 // set some auth state
                 router.replace("/profile");
+            } else {
+                notificationCtx.showNotification({
+                    title: "Error!",
+                    message: result.error || "Something went wrong :(",
+                    status: "error"
+                });
             }
 
         } else {
@@ -69,11 +89,28 @@ const SignInPage = () => {
                 throw Error("Passwords do not match");
             }
 
+            // trigger notification to show pending state
+            notificationCtx.showNotification({
+                title: "Registering.....",
+                message: "We are attempting to register you as a user.",
+                status: "pending"
+            });
+
             try {
                 const result = await createUser(formInputs.email, formInputs.password);
-                console.log(result);
+                notificationCtx.showNotification({
+                    title: "Signed up!",
+                    message: "Your registration was successful ☺.",
+                    status: "success"
+                });
+                router.reload();
               } catch (error) {
-                console.log(error);
+                // console.log(error);
+                notificationCtx.showNotification({
+                    title: "Error!",
+                    message: error.message || "Something went wrong 😭",
+                    status: "error"
+                });
             }
         }
     }
