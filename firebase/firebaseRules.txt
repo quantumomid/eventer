@@ -1,0 +1,8 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": false,  
+  }
+}
+
+i.e. only allowing READ

@@ -43,10 +43,24 @@ const ProfilePage = () => {
     //   return <p className={styles.profile}>Loading...</p>;
     // }
 
+    const handlePasswordChange = async (passwordData) => {
+        const response = await fetch('/api/user/change-password', {
+            method: 'PATCH',
+            body: JSON.stringify(passwordData),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+      
+        const data = await response.json();
+    
+        console.log(data);
+    }
+
     return (
         <section className={styles.profile}>
             <h1>Profile Page</h1>
-            <ChangePasswordForm />
+            <ChangePasswordForm handlePasswordChange={handlePasswordChange} />
         </section>
     )
 }
