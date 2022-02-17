@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
     const notificationCtx = useContext(NotificationContext);
 
     const activeNotification = notificationCtx.notification;
-    console.log({activeNotification});
+    // console.log({activeNotification});
     return (
         <Fragment>
             <MainHeader/>

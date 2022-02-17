@@ -9,7 +9,7 @@ const ChangePasswordForm = ({ handlePasswordChange }) => {
 
     const notificationCtx = useContext(NotificationContext);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         // trigger notification to show pending state
@@ -29,14 +29,15 @@ const ChangePasswordForm = ({ handlePasswordChange }) => {
             message: "Passwords do not match - please try again :(",
             status: "error"
           });
-          throw Error("Passwords do not match - please try again");
+          return;
         }
 
         try {
-          handlePasswordChange({ 
+          const response = await handlePasswordChange({ 
             oldPassword: enteredOldPassword,
             newPassword: enteredNewPassword
           });
+          console.log(response.error);
 
           notificationCtx.showNotification({
             title: "Password changed!",
@@ -46,7 +47,7 @@ const ChangePasswordForm = ({ handlePasswordChange }) => {
         } catch (error) {
           notificationCtx.showNotification({
             title: "Error!",
-            message: result.error || "Something went wrong :(",
+            message: error.message || "Something went wrong :(",
             status: "error"
         });
         }

@@ -4,7 +4,7 @@ import styles from "./MainHeader.module.css";
 
 const MainHeader = () => {
     const [session, loading] = useSession();
-    console.log(session);
+    // console.log(session);
     return (
         <header className={styles.header}>
             <div className={styles.logo}>

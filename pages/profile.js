@@ -51,10 +51,16 @@ const ProfilePage = () => {
               'Content-Type': 'application/json'
             }
           });
-      
+        // console.log(response.ok);
         const data = await response.json();
-    
-        console.log(data);
+        // console.log(data.message);
+
+        // Need to throw error now at front end(not at back end - otherwise this messes up backend)
+        // This is then catched in the try-catch in the ChangePasswordForm component!
+        if(!response.ok) {
+            throw new Error(data.message || "Something went wrong - please try again");
+        }
+        return data;
     }
 
     return (

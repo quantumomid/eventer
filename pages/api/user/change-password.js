@@ -9,6 +9,7 @@ const changePasswordHandler = async (req, res) => {
 
     if (!session) {
         res.status(401).json({ message: 'Not authenticated!' });
+        // throw new Error("Not authenticated!");
         return;
     }
 
@@ -25,6 +26,7 @@ const changePasswordHandler = async (req, res) => {
     if (!user) {
         res.status(404).json({ message: 'User not found.' });
         client.close();
+        // throw new Error("User not found.");
         return;
     }
 
@@ -37,6 +39,7 @@ const changePasswordHandler = async (req, res) => {
         // status code 401 indicates authenticated user but NOT authorised 
         res.status(403).json({ message: 'Invalid password.' });
         client.close();
+        // throw new Error("Invalid password");
         return;
     }
 
